@@ -91,6 +91,44 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 12),
                     _buildCropTipsList(),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Government Schemes',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildSchemeCard(
+                      context,
+                      title: 'CM Punjab Kisan Card',
+                      description:
+                          'Provides interest-free agricultural loans up to Rs. 150,000 for 5 acres. Also includes subsidies on fertilizers and seeds.',
+                      icon: Icons.credit_card,
+                    ),
+                    _buildSchemeCard(
+                      context,
+                      title: 'Punjab Agriculture Subsidy 2025',
+                      description:
+                          'Get up to 60% subsidy on modern agricultural machinery like seed drills, laser levelers, and sprayers.',
+                      icon: Icons.precision_manufacturing,
+                    ),
+                    _buildSchemeCard(
+                      context,
+                      title: 'Green Tractor Scheme (Phase 2)',
+                      description:
+                          '70% subsidy for small tractors and 50% for large tractors for farmers with 12.5 acres or less.',
+                      icon: Icons.agriculture,
+                    ),
+                    _buildSchemeCard(
+                      context,
+                      title: 'Direct Fertilizer Subsidy',
+                      description:
+                          'Get a cash subsidy on DAP and Potassium fertilizers. Find the voucher inside the bag and redeem it.',
+                      icon: Icons.savings,
+                    ),
+                    const SizedBox(height: 16),
                   ],
                 ),
               ),
@@ -195,6 +233,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildSchemeCard(
+    BuildContext context, {
+    required String title,
+    required String description,
+    required IconData icon,
+  }) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: ListTile(
+        leading: Icon(icon, size: 40, color: Theme.of(context).primaryColor),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(description),
+      ),
     );
   }
 }

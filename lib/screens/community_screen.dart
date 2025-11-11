@@ -28,11 +28,16 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Community')),
-      body: Column(
-        children: [
-          Expanded(child: _buildPostsList()),
-          _buildPostInputField(),
-        ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await Future.delayed(const Duration(seconds: 1));
+        },
+        child: Column(
+          children: [
+            Expanded(child: _buildPostsList()),
+            _buildPostInputField(),
+          ],
+        ),
       ),
     );
   }
@@ -55,18 +60,64 @@ class _CommunityScreenState extends State<CommunityScreen> {
           itemCount: posts.length,
           itemBuilder: (context, index) {
             final post = posts[index];
+            final bool isLiked = post.likes.contains(userEmail);
             return Card(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ListTile(
-                leading: CircleAvatar(
-                  child: Text(post.userEmail[0].toUpperCase()),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
-                ),
-                title: Text(post.content, style: const TextStyle(fontSize: 16)),
-                subtitle: Text(
-                  'By: ${post.userEmail} at ${post.timestamp.toDate().toLocal().toString().substring(0, 16)}',
-                ),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: CircleAvatar(
+                      child: Text(post.userEmail[0].toUpperCase()),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                    title: Text(post.content, style: const TextStyle(fontSize: 16)),
+                    subtitle: Text(
+                      'By: ${post.userEmail} at ${post.timestamp.toDate().toLocal().toString().substring(0, 16)}',
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 4.0,
+                    ),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                            color: isLiked
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                          ),
+                          onPressed: () {
+                            _firestoreService.toggleLike(
+                              post.postId,
+                              userEmail,
+                              post.likes,
+                            );
+                          },
+                        ),
+                        Text('${post.likes.length}'),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.comment_outlined,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Comments coming soon!'),
+                              ),
+                            );
+                          },
+                        ),
+                        const Text('0'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             );
           },
@@ -117,9 +168,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
     if (content.isEmpty) return;
 
     final newPost = Post(
+      postId: '',
       content: content,
       userEmail: userEmail,
       timestamp: Timestamp.now(),
+      likes: const [],
     );
 
     await _firestoreService.addPost(newPost);

@@ -33,8 +33,26 @@ class FirestoreService {
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
-              .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
+              .map(
+                (doc) => Post.fromMap(
+                  doc.data() as Map<String, dynamic>,
+                  doc.id,
+                ),
+              )
               .toList(),
         );
+  }
+
+  Future<void> toggleLike(
+    String postId,
+    String userEmail,
+    List<String> currentLikes,
+  ) async {
+    final docRef = _postsRef.doc(postId);
+    if (currentLikes.contains(userEmail)) {
+      await docRef.update({'likes': FieldValue.arrayRemove([userEmail])});
+    } else {
+      await docRef.update({'likes': FieldValue.arrayUnion([userEmail])});
+    }
   }
 }

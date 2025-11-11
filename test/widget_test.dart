@@ -14,15 +14,11 @@ void main() {
   testWidgets('Main navigation shows correct screens', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: MainNavigation(),
-      ),
-    );
+    await tester.pumpWidget(const MaterialApp(home: MainNavigation()));
     await tester.pumpAndSettle();
 
-  AppBar appBar = tester.widget<AppBar>(find.byType(AppBar));
-  expect((appBar.title as Text).data, 'Welcome, Farmer');
+    AppBar appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect((appBar.title as Text).data, 'Welcome, Farmer');
 
     await tester.tap(find.byIcon(Icons.storefront));
     await tester.pumpAndSettle();

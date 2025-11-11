@@ -43,7 +43,7 @@ class AppTheme {
     const backgroundColor = Color(0xFF121212);
     const surfaceColor = Color(0xFF1E1E1E);
     const lightTextColor = Color(0xFFEAEAEA);
-  final unselectedNavColor = Colors.grey.shade600;
+    final unselectedNavColor = Colors.grey.shade600;
 
     return ThemeData(
       scaffoldBackgroundColor: backgroundColor,
@@ -62,9 +62,7 @@ class AppTheme {
         onSurface: lightTextColor,
         brightness: Brightness.dark,
       ),
-      cardTheme: const CardThemeData(
-        color: surfaceColor,
-      ),
+      cardTheme: const CardThemeData(color: surfaceColor),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(color: lightTextColor),
         headlineSmall: TextStyle(color: lightTextColor),

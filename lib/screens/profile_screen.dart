@@ -5,8 +5,13 @@ import '../services/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Function(ThemeMode) changeTheme;
+  final ThemeMode currentTheme;
 
-  const ProfileScreen({super.key, required this.changeTheme});
+  const ProfileScreen({
+    super.key,
+    required this.changeTheme,
+    required this.currentTheme,
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -15,7 +20,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late final String _userEmail =
       FirebaseAuth.instance.currentUser?.email ?? 'Unknown user';
-  ThemeMode _selectedTheme = ThemeMode.system;
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +35,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 leading: CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,
-                  child: Text(_userEmail.isNotEmpty
-                      ? _userEmail[0].toUpperCase()
-                      : '?'),
+                  child: Text(
+                    _userEmail.isNotEmpty ? _userEmail[0].toUpperCase() : '?',
+                  ),
                 ),
                 title: const Text('Signed in as'),
                 subtitle: Text(_userEmail),
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              'App Theme',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+            Text('App Theme', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
             _buildThemeSwitcher(context),
             const SizedBox(height: 24),
@@ -89,13 +90,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ],
       onSelectionChanged: (Set<ThemeMode> newSelection) {
-        final theme = newSelection.first;
-        setState(() {
-          _selectedTheme = theme;
-        });
-        widget.changeTheme(theme);
+        widget.changeTheme(newSelection.first);
       },
-      selected: {_selectedTheme},
+      selected: {widget.currentTheme},
     );
   }
 
@@ -103,19 +100,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final infoItems = [
       (
         title: 'Crop Insurance',
-        description: 'Protect your harvest with government-backed schemes. '
+        description:
+            'Protect your harvest with government-backed schemes. '
             'Visit the local agriculture office for enrollment.',
         icon: Icons.shield,
       ),
       (
         title: 'Soil Testing',
-        description: 'Free soil health analysis provided quarterly. '
+        description:
+            'Free soil health analysis provided quarterly. '
             'Schedule a visit through the agriculture hotline.',
         icon: Icons.science,
       ),
       (
         title: 'Market Intelligence',
-        description: 'Daily commodity prices updated at 6 AM via SMS alerts. '
+        description:
+            'Daily commodity prices updated at 6 AM via SMS alerts. '
             'Subscribe to stay informed.',
         icon: Icons.bar_chart,
       ),

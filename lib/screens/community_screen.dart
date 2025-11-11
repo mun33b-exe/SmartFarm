@@ -15,7 +15,8 @@ class CommunityScreen extends StatefulWidget {
 class _CommunityScreenState extends State<CommunityScreen> {
   final FirestoreService _firestoreService = FirestoreService();
   final TextEditingController _postController = TextEditingController();
-  final String userEmail = FirebaseAuth.instance.currentUser?.email ?? 'anonymous';
+  final String userEmail =
+      FirebaseAuth.instance.currentUser?.email ?? 'anonymous';
 
   @override
   void dispose() {
@@ -62,10 +63,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,
                 ),
-                title: Text(
-                  post.content,
-                  style: const TextStyle(fontSize: 16),
-                ),
+                title: Text(post.content, style: const TextStyle(fontSize: 16)),
                 subtitle: Text(
                   'By: ${post.userEmail} at ${post.timestamp.toDate().toLocal().toString().substring(0, 16)}',
                 ),
@@ -87,7 +85,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             blurRadius: 3,
             color: Colors.black12,
             offset: Offset(0, -1),
-          )
+          ),
         ],
       ),
       child: Row(

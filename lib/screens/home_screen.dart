@@ -134,7 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 80,
             margin: const EdgeInsets.only(right: 8.0),
             child: Card(
-              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -190,6 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                           fontSize: 12,
                         ),
+                        maxLines: 3,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

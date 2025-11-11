@@ -22,10 +22,6 @@ class Post {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'content': content,
-      'userEmail': userEmail,
-      'timestamp': timestamp,
-    };
+    return {'content': content, 'userEmail': userEmail, 'timestamp': timestamp};
   }
 }

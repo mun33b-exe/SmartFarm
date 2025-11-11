@@ -6,30 +6,39 @@ import 'screens/market_screen.dart';
 import 'screens/profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key, required this.changeTheme, List<Widget>? screens})
-    : _screensOverride = screens;
+  const MainNavigation({
+    super.key,
+    required this.changeTheme,
+    required this.currentTheme,
+    List<Widget>? screens,
+  }) : _screensOverride = screens;
 
   final List<Widget>? _screensOverride;
   final Function(ThemeMode) changeTheme;
+  final ThemeMode currentTheme;
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  late final List<Widget> _screens;
+  late List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
-    _screens =
-        widget._screensOverride ??
-        [
-          const HomeScreen(),
-          const MarketScreen(),
-          const CommunityScreen(),
-          ProfileScreen(changeTheme: widget.changeTheme),
-        ];
+    _screens = widget._screensOverride ?? _buildScreens();
+  }
+
+  @override
+  void didUpdateWidget(covariant MainNavigation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget._screensOverride == null &&
+        widget.currentTheme != oldWidget.currentTheme) {
+      setState(() {
+        _screens = _buildScreens();
+      });
+    }
   }
 
   int _selectedIndex = 0;
@@ -59,5 +68,17 @@ class _MainNavigationState extends State<MainNavigation> {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildScreens() {
+    return [
+      const HomeScreen(),
+      const MarketScreen(),
+      const CommunityScreen(),
+      ProfileScreen(
+        changeTheme: widget.changeTheme,
+        currentTheme: widget.currentTheme,
+      ),
+    ];
   }
 }

@@ -33,9 +33,7 @@ class FirestoreService {
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
-              .map(
-                (doc) => Post.fromMap(doc.data() as Map<String, dynamic>),
-              )
+              .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
               .toList(),
         );
   }

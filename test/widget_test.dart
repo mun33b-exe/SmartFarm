@@ -19,6 +19,7 @@ void main() {
       MaterialApp(
         home: MainNavigation(
           changeTheme: (_) {},
+          currentTheme: ThemeMode.system,
           screens: const [
             HomeScreen(),
             _FakeMarketScreen(),

@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: _themeMode,
-      home: AuthGate(changeTheme: _changeTheme),
+      home: AuthGate(changeTheme: _changeTheme, currentTheme: _themeMode),
     );
   }
 }

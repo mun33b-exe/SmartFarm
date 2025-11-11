@@ -11,20 +11,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:smart_farm/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Main navigation shows correct screens', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    AppBar appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect((appBar.title as Text).data, 'SmartFarm Home');
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.tap(find.byIcon(Icons.storefront));
+    await tester.pumpAndSettle();
+    appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect((appBar.title as Text).data, 'Market');
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.people));
+    await tester.pumpAndSettle();
+    appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect((appBar.title as Text).data, 'Community');
   });
 }

@@ -8,17 +8,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:smart_farm/main.dart';
+import 'package:smart_farm/main_navigation.dart';
 
 void main() {
   testWidgets('Main navigation shows correct screens', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MainNavigation(),
+      ),
+    );
     await tester.pumpAndSettle();
 
-    AppBar appBar = tester.widget<AppBar>(find.byType(AppBar));
-    expect((appBar.title as Text).data, 'SmartFarm Home');
+  AppBar appBar = tester.widget<AppBar>(find.byType(AppBar));
+  expect((appBar.title as Text).data, 'Welcome, Farmer');
 
     await tester.tap(find.byIcon(Icons.storefront));
     await tester.pumpAndSettle();

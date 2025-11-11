@@ -9,12 +9,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:smart_farm/main_navigation.dart';
+import 'package:smart_farm/screens/home_screen.dart';
 
 void main() {
   testWidgets('Main navigation shows correct screens', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const MaterialApp(home: MainNavigation()));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MainNavigation(
+          changeTheme: (_) {},
+          screens: const [
+            HomeScreen(),
+            _FakeMarketScreen(),
+            _FakeCommunityScreen(),
+            _FakeProfileScreen(),
+          ],
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
 
     AppBar appBar = tester.widget<AppBar>(find.byType(AppBar));
@@ -30,4 +43,40 @@ void main() {
     appBar = tester.widget<AppBar>(find.byType(AppBar));
     expect((appBar.title as Text).data, 'Community');
   });
+}
+
+class _FakeMarketScreen extends StatelessWidget {
+  const _FakeMarketScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Market')),
+      body: const SizedBox.shrink(),
+    );
+  }
+}
+
+class _FakeCommunityScreen extends StatelessWidget {
+  const _FakeCommunityScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Community')),
+      body: const SizedBox.shrink(),
+    );
+  }
+}
+
+class _FakeProfileScreen extends StatelessWidget {
+  const _FakeProfileScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: const SizedBox.shrink(),
+    );
+  }
 }

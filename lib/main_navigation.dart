@@ -6,19 +6,31 @@ import 'screens/market_screen.dart';
 import 'screens/profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
+  const MainNavigation({super.key, required this.changeTheme, List<Widget>? screens})
+    : _screensOverride = screens;
+
+  final List<Widget>? _screensOverride;
+  final Function(ThemeMode) changeTheme;
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    MarketScreen(),
-    CommunityScreen(),
-    ProfileScreen(),
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens =
+        widget._screensOverride ??
+        [
+          const HomeScreen(),
+          const MarketScreen(),
+          const CommunityScreen(),
+          ProfileScreen(changeTheme: widget.changeTheme),
+        ];
+  }
 
   int _selectedIndex = 0;
 

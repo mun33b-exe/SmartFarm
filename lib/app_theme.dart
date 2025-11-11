@@ -38,12 +38,41 @@ class AppTheme {
   }
 
   static ThemeData get darkTheme {
-    final base = ThemeData.dark();
-    return base.copyWith(
-      primaryColor: const Color(0xFF2D5C3F),
-      colorScheme: base.colorScheme.copyWith(
-        secondary: const Color(0xFFE69A00),
-        primary: const Color(0xFF2D5C3F),
+    const primaryColor = Color(0xFF2D5C3F);
+    const secondaryColor = Color(0xFFE69A00);
+    const backgroundColor = Color(0xFF121212);
+    const surfaceColor = Color(0xFF1E1E1E);
+    const lightTextColor = Color(0xFFEAEAEA);
+  final unselectedNavColor = Colors.grey.shade600;
+
+    return ThemeData(
+      scaffoldBackgroundColor: backgroundColor,
+      primaryColor: primaryColor,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xFF1E1E1E),
+        foregroundColor: Colors.white,
+      ),
+      colorScheme: const ColorScheme.dark(
+        primary: primaryColor,
+        secondary: secondaryColor,
+        background: backgroundColor,
+        surface: surfaceColor,
+        onPrimary: Colors.white,
+        onBackground: lightTextColor,
+        onSurface: lightTextColor,
+        brightness: Brightness.dark,
+      ),
+      cardTheme: const CardThemeData(
+        color: surfaceColor,
+      ),
+      textTheme: const TextTheme(
+        bodyMedium: TextStyle(color: lightTextColor),
+        headlineSmall: TextStyle(color: lightTextColor),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: surfaceColor,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: unselectedNavColor,
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product_model.dart';
@@ -60,7 +61,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     try {
       final userEmail = FirebaseAuth.instance.currentUser?.email ?? 'unknown';
-      final imageUrl = await _storageService.uploadProductImage(_image!);
+      final imagePath = await _storageService.uploadProductImage(_image!);
 
       final double price = double.tryParse(_priceController.text.trim()) ?? 0.0;
 
@@ -68,7 +69,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         name: _nameController.text.trim(),
         description: _descController.text.trim(),
         price: price,
-        imageUrl: imageUrl,
+        imagePath: imagePath,
         sellerEmail: userEmail,
         timestamp: Timestamp.now(),
       );
@@ -76,6 +77,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
       await _firestoreService.addProduct(product);
       if (!mounted) return;
       Navigator.pop(context);
+    } on FirebaseException catch (e) {
+      if (!mounted) return;
+      final friendlyMessage =
+          e.message ?? 'Image upload failed. Please try again.';
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(friendlyMessage)));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(

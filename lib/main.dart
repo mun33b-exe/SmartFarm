@@ -10,8 +10,21 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.system;
+
+  void _changeTheme(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -21,8 +34,8 @@ class MyApp extends StatelessWidget {
       title: 'SmartFarm',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      home: const AuthGate(),
+      themeMode: _themeMode,
+      home: AuthGate(changeTheme: _changeTheme),
     );
   }
 }

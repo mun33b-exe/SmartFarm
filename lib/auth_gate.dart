@@ -6,7 +6,9 @@ import 'main_navigation.dart';
 import 'screens/login_screen.dart';
 
 class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
+  final Function(ThemeMode) changeTheme;
+
+  const AuthGate({super.key, required this.changeTheme});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class AuthGate extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const MainNavigation();
+          return MainNavigation(changeTheme: changeTheme);
         }
 
         return const LoginScreen();

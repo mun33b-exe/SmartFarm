@@ -71,7 +71,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,
                     ),
-                    title: Text(post.content, style: const TextStyle(fontSize: 16)),
+                    title: Text(
+                      post.content,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                     subtitle: Text(
                       'By: ${post.userEmail} at ${post.timestamp.toDate().toLocal().toString().substring(0, 16)}',
                     ),

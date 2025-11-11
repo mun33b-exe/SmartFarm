@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
   Map<String, dynamic>? _weatherData;
+  String _selectedCrop = 'Wheat';
 
   @override
   void initState() {
@@ -65,6 +66,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       "Today's Tips",
                       style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 12),
+                    SegmentedButton<String>(
+                      segments: const [
+                        ButtonSegment(value: 'Wheat', label: Text('Wheat')),
+                        ButtonSegment(value: 'Rice', label: Text('Rice')),
+                        ButtonSegment(value: 'Cotton', label: Text('Cotton')),
+                      ],
+                      selected: {_selectedCrop},
+                      onSelectionChanged: (Set<String> newSelection) {
+                        setState(() {
+                          _selectedCrop = newSelection.first;
+                        });
+                      },
+                      style: SegmentedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.color,
+                        selectedBackgroundColor: Theme.of(context).primaryColor,
+                        selectedForegroundColor: Colors.white,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     _buildCropTipsList(),
@@ -156,51 +179,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCropTipsList() {
-    return SizedBox(
-      height: 120,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: CropTip.dummyTips.length,
-        itemBuilder: (context, index) {
-          final tip = CropTip.dummyTips[index];
-          return Container(
-            width: 150,
-            margin: const EdgeInsets.only(right: 8.0),
-            child: Card(
-              color: Theme.of(context).primaryColor,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(tip.icon, style: const TextStyle(fontSize: 30)),
-                    Text(
-                      tip.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Flexible(
-                      child: Text(
-                        tip.description,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                        maxLines: 3,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    final tips = CropTip.filteredTips[_selectedCrop] ?? [];
+
+    return Column(
+      children: tips.map((tip) {
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ListTile(
+            leading: Text(tip.icon, style: const TextStyle(fontSize: 30)),
+            title: Text(
+              tip.title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-          );
-        },
-      ),
+            subtitle: Text(tip.description),
+          ),
+        );
+      }).toList(),
     );
   }
 }
